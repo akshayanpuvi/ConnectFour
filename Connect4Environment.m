@@ -10,17 +10,32 @@ classdef Connect4Environment < handle
             axis on;
             grid on;
             
-            %axis([-5 5 -5 5 -5 10])     % Setting the workspace axis [xmin xmax ymin ymax zmin zmax]
+            %axis([-4 4 -2 2.95 0 5])     % Setting the workspace axis [xmin xmax ymin ymax zmin zmax]
 
             view(3);    % Helps with visualising the figure
 
+            floor = PlaceObject('tile.ply', [1, 0.3, -2.3]);    
+            vertfloor = [get(floor,'Vertices'), ones(size(get(floor,'Vertices'),1),1)]*troty(pi/2);     
+            vertfloor(:,1) = vertfloor(:,1) * 1;    
+            vertfloor(:,2) = vertfloor(:,2) * 2.2;  
+            vertfloor(:,3) = vertfloor(:,3) * 2.2;
+            set(floor,'Vertices',vertfloor(:,1:3))
 
-            wall = PlaceObject('wall.ply', [0.75, -0.5, 0]);    
-            vertwall = [get(wall,'Vertices'), ones(size(get(wall,'Vertices'),1),1)]*trotx(-pi/2);     
-            vertwall(:,1) = vertwall(:,1) * 4;    
-            vertwall(:,2) = vertwall(:,2) * 4;  
-            vertwall(:,3) = vertwall(:,3) * 4;
-            set(wall,'Vertices',vertwall(:,1:3))
+            wall1 = PlaceObject('wall.ply', [0, -0.5, -0.75]);    
+            vertwall1 = [get(wall1,'Vertices'), ones(size(get(wall1,'Vertices'),1),1)]*trotx(-pi/2);     
+            vertwall1(:,1) = vertwall1(:,1) * 4;    
+            vertwall1(:,2) = vertwall1(:,2) * 4;  
+            vertwall1(:,3) = vertwall1(:,3) * 4;
+            set(wall1,'Vertices',vertwall1(:,1:3))
+
+            wall2 = PlaceObject('tile.ply', [0.4, 0.3, 0.95]);    
+            vertwall2 = [get(wall2,'Vertices'), ones(size(get(wall2,'Vertices'),1),1)]*trotx(pi)*trotz(pi);     
+            vertwall2(:,1) = vertwall2(:,1) * 3.2;    
+            vertwall2(:,2) = vertwall2(:,2) * 2.2;  
+            vertwall2(:,3) = vertwall2(:,3) * 1;
+            set(wall2,'Vertices',vertwall2(:,1:3))
+            
+            pause();
 
             house = PlaceObject('tableBlue1x1x0.5m.ply', [0, 0, 0]);    
             verthouse = [get(house,'Vertices'), ones(size(get(house,'Vertices'),1),1)];     
