@@ -6,7 +6,7 @@ function Environment
             axis on;
             grid on;
 
-            axis([-5.3 5.3 -4.5 4 -0.1 4])     % Setting the workspace axis [xmin xmax ymin ymax zmin zmax]
+            %axis([-5.3 5.3 -4.5 4 -0.1 4])     % Setting the workspace axis [xmin xmax ymin ymax zmin zmax]
 
             view(3);    % Helps with visualising the figure
 
@@ -44,13 +44,13 @@ function Environment
             verttable(:,1) = verttable(:,1) * 2;  % Line 4
             set(table,'Vertices',verttable(:,1:3))  % Line 5
 
-            baseTr1 = transl([-2.85, -0.7, 0.5])* trotz(pi/2);    % Translation in x, y, z and rotation about the z axis clockwise sets the where the base of the robot is located
-            r1 = LinearUR3e(baseTr1);     % Modelling the UR3e on Linear rails with the base transform
-            baseTr2 = transl([-1.15, -0.7, 0.5]) * trotz(pi);    % Translation in x, y, z and rotation about the z axis clockwise sets the where the base of the robot is located
-            r2 = LinearTM5(baseTr2);     % Modelling the UR3e on Linear rails with the base transform
+            % baseTr1 = transl([-2.85, -0.7, 0.5])* trotz(pi/2);    % Translation in x, y, z and rotation about the z axis clockwise sets the where the base of the robot is located
+            % r1 = LinearUR3e(baseTr1);     % Modelling the UR3e on Linear rails with the base transform
+            % baseTr2 = transl([-1.15, -0.7, 0.5]) * trotz(pi);    % Translation in x, y, z and rotation about the z axis clockwise sets the where the base of the robot is located
+            % r2 = LinearTM5(baseTr2);     % Modelling the UR3e on Linear rails with the base transform
 
-            flatc4 = PlaceObject('flatc4.ply', [-40, -10.25, -20]);    
-            vertflatc4 = [get(flatc4,'Vertices'), ones(size(get(flatc4,'Vertices'),1),1)]*trotx(pi/2);     
+            flatc4 = PlaceObject('flatc4.ply', [20, -10.25, -40]);    
+            vertflatc4 = [get(flatc4,'Vertices'), ones(size(get(flatc4,'Vertices'),1),1)]*trotx(pi/2)*trotz(pi/2);     
             vertflatc4(:,1) = vertflatc4(:,1) * 0.05;    
             vertflatc4(:,2) = vertflatc4(:,2) * 0.05;  
             vertflatc4(:,3) = vertflatc4(:,3) * 0.05;
