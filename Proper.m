@@ -452,32 +452,32 @@ end
 % Set Up
 
 % Arm placement
-UR3_Arm = [0.001, -0.35, 0];
-TM5_Arm = [0.001, 0.4, 0];
+Environment();
+baseTr1 = transl([-2.35, -1.001, 0.5])* trotz(pi/2);
+Arm_1 = UR3(baseTr1);
 
+baseTr2 = transl([-1.4, -0.7, 0.5]) * trotz(pi);
+Arm_2 = LinearTM5(baseTr2);
 
 
 % Board Placement
 Board = PlaceFlatObject([0, 0, 0]);
-yellowStartPos = [-0.2, -0.5, 0.005];
-redStartPos = [0.3, 0.5, 0.005];
+yellowStartPos = [-0.95,-1.26, 0.5];
+redStartPos = [-2.62, -1.26, 0.5];
 % Spawn yellow and red coins near each arm
 
 
 % Define board boundaries and number of slots
-bottomLeft = [-0.3, -0.25, 0];   
-topRight = [0.3, 0.25, 0];       
+bottomLeft = [-2.25, -0.7, 0.5];   %
+topRight = [-1.75, -1.3, 0.5];      
 numCols = 7;                       
 numRows = 6;                        
 
 slotPositions = calculateSlotPositions(bottomLeft, topRight, numCols, numRows); %calculates each slot position
 
 
-Arm_1 = UR3(transl(UR3_Arm(1), UR3_Arm(2), UR3_Arm(3)));
-Arm_2 = LinearTM5(transl(TM5_Arm(1), TM5_Arm(2), TM5_Arm(3)));
-
-s = 2;
-hoverHeight = 0.1;
+s = 1;
+hoverHeight = 0.05 + baseTr1(3, 4);
 
 
 
@@ -500,19 +500,21 @@ while true  % Infinite loop for alternating turns
 
         % Alternate turns between Arm_1 and Arm_2
         if s == 1
-            MoveToTargetPosition(Arm_1, yellowStartPos , Arm_1.model.qlim, []);
-            MoveToTargetPosition(Arm_1, [yellowStartPos(1), yellowStartPos(2), 0.2] , Arm_1.model.qlim, []);
-            HoverOverSlot(Arm_1, hoverPosition, 0.2);
+            MoveToTargetPosition(Arm_1, redStartPos , Arm_1.model.qlim, []);
+            MoveToTargetPosition(Arm_1, [redStartPos(1), redStartPos(2), redStartPos(3) + 0.2] , Arm_1.model.qlim, []);
+            HoverOverSlot(Arm_1, hoverPosition, 0.1 + baseTr1(3, 4));
             HoverOverSlot(Arm_1, hoverPosition, hoverHeight);
-            HoverOverSlot(Arm_1, hoverPosition, 0.2);
-            MoveToTargetPosition(Arm_1, [yellowStartPos(1), yellowStartPos(2), 0.2] , Arm_1.model.qlim, []);
+            HoverOverSlot(Arm_1, hoverPosition, 0.1 + baseTr1(3, 4));
+            MoveToTargetPosition(Arm_1, [redStartPos(1), redStartPos(2), redStartPos(3) + 0.2] , Arm_1.model.qlim, []);
             s = 2;  % Switch to Arm_2 for the next turn
         else
-            MoveToTargetPosition(Arm_2, [-0.6, 0.5, 0.5] , Arm_2.model.qlim, []);  
-            HoverOverSlot(Arm_2, hoverPosition, 0.4);
+            MoveToTargetPosition(Arm_2, [yellowStartPos(1), yellowStartPos(2), yellowStartPos(3) + 0.2] , Arm_2.model.qlim, []);
+            MoveToTargetPosition(Arm_2, [yellowStartPos(1), yellowStartPos(2), yellowStartPos(3) + 0.15] , Arm_2.model.qlim, []);
+            MoveToTargetPosition(Arm_2, [yellowStartPos(1), yellowStartPos(2), yellowStartPos(3) + 0.2] , Arm_2.model.qlim, []);
+            HoverOverSlot(Arm_2, hoverPosition, 0.3 + baseTr1(3, 4));
             HoverOverSlot(Arm_2, hoverPosition, hoverHeight);
-            HoverOverSlot(Arm_2, hoverPosition, 0.4);
-            MoveToTargetPosition(Arm_2, [-0.6, 0.5, 0.5] , Arm_2.model.qlim, []); 
+            HoverOverSlot(Arm_2, hoverPosition, 0.3 + baseTr1(3, 4));
+             MoveToTargetPosition(Arm_2, [yellowStartPos(1), yellowStartPos(2), yellowStartPos(3) + 0.2] , Arm_2.model.qlim, []); 
             s = 1;  % Switch to Arm_1 for the next turn
         end
     else
@@ -521,172 +523,9 @@ while true  % Infinite loop for alternating turns
 end
 
 
-%%
-%robotArm = LinearTM5;
-%destination = [0.2, 0.2, 0.2];
-%MoveToTargetPosition(robotArm, destination, robotArm.model.qlim, []);
-% Main script
-figure;
-axis([-1 1 -1 1 0 1]);  % Set axis limits to ensure all elements are visible
-xlabel('X');
-ylabel('Y');
-zlabel('Z');
-grid on;
-hold on;
-
-% Initialize the robot arm at the origin
-% Initialize robot and environment
-robotArm = UR3();  % Replace with appropriate initialization if needed
-
-% Define joint limits for your robot
-% Define an obstacle in the environment
-[faces, vertices] = createObstacleBox([0.3, 0, 0.3], 0.2);  % Center at [0.3, 0, 0.3] with side length 0.5
-faceNormals = computeFaceNormals(faces, vertices);
-
-% Create obstacle struct to pass to function
-obstacle.type = 'plane';
-obstacle.faces = faces;
-obstacle.vertex = vertices;
-obstacle.faceNormals = faceNormals;
-envObstacles = [obstacle];
-
-% Plot the obstacle for visualization
-plotBoxObstacle(faces, vertices);
-
-% Define target position within or just behind obstacle to test collision
-targetPos = [0.3, 0, 0.3];  % Adjust based on the position of the obstacle
-
-% Test MoveToTargetPosition with collision detection
-MoveToTargetPosition(robotArm, [0.3, 0.2, 0.3] , robotArm.model.qlim, envObstacles);
-MoveToTargetPosition(robotArm, [0.3, -0.2, 0.3] , robotArm.model.qlim, envObstacles);
 
 
 
-%% This script allows the arm to hover over any slot you want. 
-
-% Define board boundaries and number of slots
-bottomLeft = [-0.3, -0.25, 0];     % Bottom-left corner of the Connect 4 board
-topRight = [0.3, 0.25, 0];         % Top-right corner of the Connect 4 board
-numCols = 7;                        % Number of columns in Connect 4
-numRows = 6;                        % Number of rows in Connect 4
-
-% Initialize Connect 4 board and UR3 arm
-Board = PlaceFlatObject([0, 0, 0]);
-robotArm = UR3(transl(0.001, -0.35, 0));  % Adjust initial position as needed
-
-% Calculate slot positions for Connect 4 board
-slotPositions = calculateSlotPositions(bottomLeft, topRight, numCols, numRows);
-
-% Define the hover height above the board
-hoverHeight = 0.1;  % Adjust hover height as needed
-
-% Example: Hover over slot in column 4, row 2
-column = 3;
-row = 5;
-hoverPosition = squeeze(slotPositions(column, row, :))';  % Extract the position for the selected slot
-HoverOverSlot(robotArm, hoverPosition, hoverHeight);      % Command arm to hover over this slot
-
-
-%%
-
-% Define initial robot setup with a fixed base
-robotArm = UR3();  % Initialize UR3 with base at origin
-
-% Define the start, end positions for the end effector, and obstacles
-startPos = [0.2, -0.2, 0.2];      % Starting position of the end effector
-endPos = [0.6, 0.6, 0.6];         % Target position for the end effector
-jointLimits = robotArm.model.qlim; % Joint limits from the UR3 model
-
-% Define obstacle properties (a box in the path)
-[faces, vertices] = createObstacleBox([0.4, 0.1, 0.3], 0.15); % Box at center with side 0.15m
-obstacle.faces = faces;
-obstacle.vertex = vertices;
-obstacle.faceNormals = computeFaceNormals(faces, vertices);
-obstacle.type = "plane";
-
-% Define the environment with obstacles
-envObstacles = [obstacle];
-
-% Initialize trajectory planning parameters
-currentPos = startPos;
-currentConfig = robotArm.model.getpos();  % Get initial joint configuration
-
-% Loop to plan and execute trajectory until target is reached
-while norm(currentPos - endPos) > 0.05  % Stop if close enough to target
-    % Calculate target pose and trajectory
-    approachTransform = transl(endPos) * rpy2tr(pi, 0, 0); % Target pose with end-effector down
-    targetConfig = robotArm.model.ikcon(approachTransform, currentConfig);
-
-    % Generate joint trajectory
-    steps = 50;
-    qMatrix = jtraj(currentConfig, targetConfig, steps);
-
-    % Execute the trajectory with collision detection
-    chfalse;
-    for i = 1:steps
-        robotArm.model.animate(qMatrix(i, :));
-        drawnow;
-        
-        % Update current end-effector position
-        currentPos = robotArm.model.fkine(qMatrix(i, :)).t';
-        
-        % Check for collisions at each step
-        for obs = envObstacles
-            if obs.type == "plane"
-                collisionDetected = checkPlaneCollision(robotArm, qMatrix(i, :), obs.faces, obs.vertex, obs.faceNormals);
-            end
-            if collisionDetected
-                disp('Collision detected! Recalculating path...');
-                break;
-            end
-        end
-
-        % If collision is detected, adjust target position to avoid obstacle
-        if collisionDetected
-            endPos = endPos + [0, 0.05, 0.05];  % Offset to move around obstacle
-            break;
-        end
-    end
-
-    % Update the current configuration if path was collision-free
-    if ~collisionDetected
-        currentConfig = targetConfig;
-    end
-end
-
-disp('Path completed without collision');
 
 
 
-%%
-% Define ellipsoid obstacle with all necessary fields
-ellipsoidObs.type = "ellipsoid";
-ellipsoidObs.center = [0.5, 0.2, 0.3];
-ellipsoidObs.radii = [0.2, 0.2, 0.3];
-ellipsoidObs.faces = [];        % Unused, set to empty
-ellipsoidObs.vertex = [];       % Unused, set to empty
-ellipsoidObs.faceNormals = [];   % Unused, set to empty
-
-% Define a simple example plane-based obstacle (box) with placeholder faces and vertices
-planeObs.type = "plane";
-planeObs.center = [];           % Unused, set to empty
-planeObs.radii = [];            % Unused, set to empty
-planeObs.faces = [1, 2, 3, 4;   % Example faces
-                  5, 6, 7, 8];
-planeObs.vertex = [0, 0, 0;     % Example vertices (define a simple box shape)
-                   1, 0, 0;
-                   1, 1, 0;
-                   0, 1, 0;
-                   0, 0, 1;
-                   1, 0, 1;
-                   1, 1, 1;
-                   0, 1, 1];
-planeObs.faceNormals = [0, 0, 1;   % Example normals for each face
-                        0, 0, -1];
-
-% Combine obstacles into an array with matching fields
-envObstacles = [ellipsoidObs, planeObs];
-
-
-robotArm = UR3(transl(0, 0, 0));
-MoveToTargetPosition(robotArm, [0.3, 0.3, 0.3], robotArm.model.qlim, envObstacles);
