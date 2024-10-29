@@ -6,7 +6,7 @@ function Environment
             axis on;
             grid on;
 
-            %axis([-5.3 5.3 -4.5 4 -0.1 4])     % Setting the workspace axis [xmin xmax ymin ymax zmin zmax]
+            axis([-5.3 5.3 -4.5 4 -0.1 4])     % Setting the workspace axis [xmin xmax ymin ymax zmin zmax]
 
             view(3);    % Helps with visualising the figure
 
@@ -44,9 +44,9 @@ function Environment
             verttable(:,1) = verttable(:,1) * 2;  % Line 4
             set(table,'Vertices',verttable(:,1:3))  % Line 5
 
-            % baseTr1 = transl([-2.85, -0.7, 0.5])* trotz(pi/2);    % Translation in x, y, z and rotation about the z axis clockwise sets the where the base of the robot is located
-            % r1 = LinearUR3e(baseTr1);     % Modelling the UR3e on Linear rails with the base transform
-            % baseTr2 = transl([-1.15, -0.7, 0.5]) * trotz(pi);    % Translation in x, y, z and rotation about the z axis clockwise sets the where the base of the robot is located
+            % baseTr1 = transl([-2.35, -1.001, 0.5])* trotz(pi/2);    % Translation in x, y, z and rotation about the z axis clockwise sets the where the base of the robot is located
+            % r1 = UR3(baseTr1);     % Modelling the UR3e on Linear rails with the base transform
+            % baseTr2 = transl([-1.4, -0.7, 0.5]) * trotz(pi);    % Translation in x, y, z and rotation about the z axis clockwise sets the where the base of the robot is located
             % r2 = LinearTM5(baseTr2);     % Modelling the UR3e on Linear rails with the base transform
 
             flatc4 = PlaceObject('flatc4.ply', [20, -10.25, -40]);    
@@ -56,7 +56,7 @@ function Environment
             vertflatc4(:,3) = vertflatc4(:,3) * 0.05;
             set(flatc4,'Vertices',vertflatc4(:,1:3))
 
-            for x = -1400:-300:-2000
+            for x = -2700:-300:-3300
                 for y = -1800:-300:-3600
                     countery = PlaceObject('ImageToStl.com_countery.ply', [x, y, 1450]);    
                     vertcountery = [get(countery,'Vertices'), ones(size(get(countery,'Vertices'),1),1)];     
@@ -67,7 +67,7 @@ function Environment
                 end
             end
 
-            for x = -9500:-300:-10100
+            for x = -7500:-300:-8100
                 for y = -1800:-300:-3600
                     counterr = PlaceObject('ImageToStl.com_counter.ply', [x, y, 1450]);    
                     vertcounterr = [get(counterr,'Vertices'), ones(size(get(counterr,'Vertices'),1),1)];     
