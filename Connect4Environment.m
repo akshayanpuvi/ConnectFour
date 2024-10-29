@@ -27,21 +27,21 @@ classdef Connect4Environment < handle
             vertwall2(:,2) = vertwall2(:,2) * 4.25;  
             vertwall2(:,3) = vertwall2(:,3) * 2.0;
             set(wall2,'Vertices',vertwall2(:,1:3))
-            
+
             floor = PlaceObject('tile.ply', [-0.27, -0.1, 1.05]);    
             vertfloor = [get(floor,'Vertices'), ones(size(get(floor,'Vertices'),1),1)]*trotx(pi)*trotz(pi);     
             vertfloor(:,1) = vertfloor(:,1) * 7.2;    
             vertfloor(:,2) = vertfloor(:,2) * 4.2;  
             vertfloor(:,3) = vertfloor(:,3) * 1;
             set(floor,'Vertices',vertfloor(:,1:3))
-            
+
             home = PlaceObject('ImageToStl.com_house.ply', [0, 0, -100]);    
             verthome = [get(home,'Vertices'), ones(size(get(home,'Vertices'),1),1)];     
             verthome(:,1) = verthome(:,1) * 0.022;    
             verthome(:,2) = verthome(:,2) * 0.022;  
             verthome(:,3) = verthome(:,3) * 0.022;
             set(home,'Vertices',verthome(:,1:3))
-                
+
             table = PlaceObject('tableBrown2.1x1.4x0.5m.ply', [-1.0, -0.5, 0]);    % Line 1
             verttable = [get(table,'Vertices'), ones(size(get(table,'Vertices'),1),1)];     % Line 2
             verttable(:,2) = verttable(:,2) * 2;    % Line 3
@@ -59,7 +59,7 @@ classdef Connect4Environment < handle
             vertflatc4(:,2) = vertflatc4(:,2) * 0.05;  
             vertflatc4(:,3) = vertflatc4(:,3) * 0.05;
             set(flatc4,'Vertices',vertflatc4(:,1:3))
-            
+
             for x = -1400:-300:-2000
                 for y = -1800:-300:-3600
                     countery = PlaceObject('ImageToStl.com_countery.ply', [x, y, 1450]);    
@@ -90,6 +90,43 @@ classdef Connect4Environment < handle
             set(personstand,'Vertices',vertpersonstand(:,1:3))
 
             %PlaceObject('emergencyStopWallMounted.ply', [-1, -2.45, 1]);
+
+            estop = PlaceObject('emergencyStopWallMounted.ply', [1, -5.2, 1.5]);    
+            vertestop = [get(estop,'Vertices'), ones(size(get(estop,'Vertices'),1),1)]*trotz(pi/2);     
+            set(estop,'Vertices',vertestop(:,1:3))
+
+            firex = PlaceObject('fireExtinguisher.ply', [-5.2, -2, 1.25]);    
+            vertfirex = [get(firex,'Vertices'), ones(size(get(firex,'Vertices'),1),1)];     
+            set(firex,'Vertices',vertfirex(:,1:3))
+
+            slightsensor = PlaceObject('safetycurtain.ply', [-54, 4, 6.8]);    
+            vertslightsensor = [get(slightsensor,'Vertices'), ones(size(get(slightsensor,'Vertices'),1),1)];     
+            vertslightsensor(:,1) = vertslightsensor(:,1) * 0.075;    
+            vertslightsensor(:,2) = vertslightsensor(:,2) * 0.075;  
+            vertslightsensor(:,3) = vertslightsensor(:,3) * 0.075;
+            set(slightsensor,'Vertices',vertslightsensor(:,1:3))
+
+            slightsensor2 = PlaceObject('safetycurtain.ply', [0.3, -5, 6.8]);    
+            vertslightsensor2 = [get(slightsensor2,'Vertices'), ones(size(get(slightsensor2,'Vertices'),1),1)]*trotz(pi);     
+            vertslightsensor2(:,1) = vertslightsensor2(:,1) * 0.075;    
+            vertslightsensor2(:,2) = vertslightsensor2(:,2) * 0.075;  
+            vertslightsensor2(:,3) = vertslightsensor2(:,3) * 0.075;
+            set(slightsensor2,'Vertices',vertslightsensor2(:,1:3))
+
+            slightsensor3 = PlaceObject('safetycurtain.ply', [-54, -31, 6.8]);    
+            vertslightsensor3 = [get(slightsensor3,'Vertices'), ones(size(get(slightsensor3,'Vertices'),1),1)];     
+            vertslightsensor3(:,1) = vertslightsensor3(:,1) * 0.075;    
+            vertslightsensor3(:,2) = vertslightsensor3(:,2) * 0.075;  
+            vertslightsensor3(:,3) = vertslightsensor3(:,3) * 0.075;
+            set(slightsensor3,'Vertices',vertslightsensor3(:,1:3))
+
+            slightsensor4 = PlaceObject('safetycurtain.ply', [0.3, 30, 6.8]);    
+            vertslightsensor4 = [get(slightsensor4,'Vertices'), ones(size(get(slightsensor4,'Vertices'),1),1)]*trotz(pi);     
+            vertslightsensor4(:,1) = vertslightsensor4(:,1) * 0.075;    
+            vertslightsensor4(:,2) = vertslightsensor4(:,2) * 0.075;  
+            vertslightsensor4(:,3) = vertslightsensor4(:,3) * 0.075;
+            set(slightsensor4,'Vertices',vertslightsensor4(:,1:3))
+            
             pause();
 
         end
